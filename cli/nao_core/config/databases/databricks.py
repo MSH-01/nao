@@ -138,6 +138,7 @@ class DatabricksConfig(DatabaseConfig):
 
     def check_connection(self) -> tuple[bool, str]:
         """Test connectivity to Databricks."""
+        conn = None
         try:
             conn = self.connect()
             if self.schema_name:
@@ -149,3 +150,6 @@ class DatabricksConfig(DatabaseConfig):
             return True, "Connected successfully"
         except Exception as e:
             return False, str(e)
+        finally:
+            if conn is not None:
+                conn.disconnect()
